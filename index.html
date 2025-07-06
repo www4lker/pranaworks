@@ -573,6 +573,11 @@
             color: white;
         }
 
+        /* Ajuste para headers em todas as seções */
+        section.section {
+            padding-top: 5rem; /* Espaço para o header fixo */
+        }
+        
         /* Responsividade */
         @media (max-width: 768px) {
             .hero h1 {
@@ -622,15 +627,15 @@
                 padding: 0.75rem;
             }
 
-            /* Fix para seção de prática - adicionar margem superior suficiente */
-            #practice {
+            /* Fix para todas as seções em mobile */
+            section.section {
                 padding-top: 6rem; /* Espaço adicional para compensar header */
             }
         }
 
         /* Media query específica para telas de 412px-520px */
         @media (max-width: 520px) and (min-width: 412px) {
-            #practice {
+            section.section {
                 padding-top: 7rem; /* Mais espaço para essas telas específicas */
             }
         }
@@ -818,6 +823,44 @@
         }
         
         body.dark-theme .pattern-detail-card p {
+            color: #ecf0f1;
+        }
+        
+        /* Tema escuro - correções gerais */
+        body.dark-theme {
+            background: #1a1a1a;
+            color: #ecf0f1;
+        }
+        
+        body.dark-theme header {
+            background: rgba(42, 42, 42, 0.95);
+        }
+        
+        body.dark-theme .section {
+            background: #1a1a1a;
+            color: #ecf0f1;
+        }
+        
+        body.dark-theme .insight-card,
+        body.dark-theme .protocol-container,
+        body.dark-theme .pattern-mini {
+            background: #2c3e50;
+            color: #ecf0f1;
+        }
+        
+        body.dark-theme .controls-card {
+            background: #2c3e50;
+        }
+        
+        body.dark-theme .timer-progress {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-theme .progress-bar-container {
+            background: #34495e;
+        }
+        
+        body.dark-theme .progress-text {
             color: #ecf0f1;
         }
         
@@ -1081,6 +1124,52 @@
             color: var(--primary-color);
             font-weight: 500;
         }
+        
+        /* Barra de progresso do timer */
+        .timer-progress {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+        
+        .progress-bar-container {
+            position: relative;
+            width: 100%;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 0.8rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--bg-gradient);
+            border-radius: 12px;
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .timer-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .timer-info span {
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -1239,7 +1328,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p1')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P2 - Maximização Atencional -->
@@ -1272,7 +1361,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p2')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P3 - Preparação para Meditação -->
@@ -1305,7 +1394,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p3')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P4 - Reset Neural -->
@@ -1338,7 +1427,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p4')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P5 - Ignição Metabólica -->
@@ -1371,7 +1460,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p5')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P6 - Regeneração Profunda -->
@@ -1404,7 +1493,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p6')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
 
         <!-- P7 - Gaming Competitivo -->
@@ -1437,7 +1526,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-practice" onclick="PranaHub.startPracticeMode('p7')">Praticar Agora</button>
+            <!-- Botão removido - apenas informativo -->
         </div>
     </section>
 
@@ -1627,18 +1716,28 @@
                         <canvas id="breath-circle" width="480" height="480"></canvas>
                     </div>
 
-                    <div class="practice-tabs">
-                        <div class="practice-tab active" id="tab-pattern">Prática Livre</div>
-                        <div class="practice-tab" id="tab-protocol">Protocolo Guiado</div>
-                    </div>
+                    <!-- Removido tabs - apenas prática livre -->
                 </section>
 
                 <section class="pattern-area controls-card" id="content-pattern">
+                    <div class="timer-progress" id="timerProgress" style="display: none;">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                            <div class="progress-text" id="progressText">0%</div>
+                        </div>
+                        <div class="timer-info">
+                            <span id="elapsedTime">0:00</span> / <span id="totalTime">0:00</span>
+                        </div>
+                    </div>
                     <div class="timer-selection">
                         <label>Duração:</label>
+                        <button class="timer-btn" data-minutes="2">2 min</button>
+                        <button class="timer-btn" data-minutes="3">3 min</button>
+                        <button class="timer-btn" data-minutes="4">4 min</button>
                         <button class="timer-btn active" data-minutes="5">5 min</button>
+                        <button class="timer-btn" data-minutes="6">6 min</button>
+                        <button class="timer-btn" data-minutes="7">7 min</button>
                         <button class="timer-btn" data-minutes="10">10 min</button>
-                        <button class="timer-btn" data-minutes="15">15 min</button>
                         <button class="timer-btn" data-minutes="0">Contínuo</button>
                     </div>
                     <div class="animation-style-selection">
@@ -1650,7 +1749,7 @@
                     </div>
                     <div class="pattern-row">
                         <select id="patternSelect" aria-label="Selecionar padrão de respiração"></select>
-                        <button id="startPatternBtn" aria-label="Iniciar respiração padrão" onclick="PranaHub.startPatternPractice()">Iniciar</button>
+                        <button id="startPatternBtn" aria-label="Iniciar respiração padrão">Iniciar</button>
                         <button id="stopBtn" aria-label="Parar respiração" disabled>Parar</button>
                         <button class="audio-control" title="Desativar áudio" aria-label="Ativar/desativar áudio" style="display: inline-block;" aria-pressed="true">🔊</button>
                     </div>
@@ -1659,20 +1758,7 @@
                     </div>
                 </section>
 
-                <section class="protocol-area controls-card" id="content-protocol">
-                    <div class="protocol-row">
-                        <select id="protocolSelect" aria-label="Selecionar protocolo de respiração"></select>
-                        <button id="startProtocolBtn" aria-label="Iniciar protocolo" onclick="PranaHub.startProtocolPractice()">Confirmar Início</button>
-                        <button id="cancelProtocolBtn" aria-label="Cancelar protocolo" disabled>Cancelar Protocolo</button>
-                        <button class="audio-control" title="Controlar áudio" aria-label="Ativar/desativar áudio" style="display: inline-block;">🔊</button>
-                    </div>
-                    <div class="protocol-status">
-                        <div id="stageStatus" tabindex="0"></div>
-                        <progress id="protocolProgress" value="0" max="1"></progress>
-                        <div id="protocolTimer" tabindex="0"></div>
-                        <div id="nextPreview" tabindex="0"></div>
-                    </div>
-                </section>
+                <!-- Removido protocolo guiado -->
             </div>
         </div>
         <a href="#" class="disclaimer-link" style="position: static; display: block; margin: 2rem auto 0; text-align: center; z-index: 20;" onclick="showDisclaimerModal();return false;" title="Orientações de Segurança e Termo de Responsabilidade">⚠️ Orientações de Segurança</a>
@@ -1688,23 +1774,58 @@
     </div>
 
     <!-- Footer com links do projeto -->
-    <footer style="background: #2c3e50; color: #ecf0f1; padding: 2rem 0; margin-top: 3rem; text-align: center;">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-        <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem;">
-        <div style="min-width: 250px;">
-        <h3 style="color: #4a90e2; margin-bottom: 1rem; font-size: 1.2rem;">📚 Relatórios e Pesquisa</h3>
-        <p style="margin-bottom: 1rem; line-height: 1.6;">Acesse estudos detalhados sobre os fundamentos científicos e benefícios do Pranayama.</p>
-        <a href="https://docs.google.com/document/d/e/2PACX-1vSl5iKnLRu8KLn1Ay9AwhBATD7xjm9b8wdX01xVo9iGesClpGl40K87gCNEzbMKWiC9ng31c7wFfhYE/pub" style="color: #48d1cc; text-decoration: none; font-weight: 500;" target="_blank">🔬 Ler Relatórios Relacionados</a>
-        </div>
-        <div style="min-width: 250px;">
-        <h3 style="color: #4a90e2; margin-bottom: 1rem; font-size: 1.2rem;">🛠️ Código Aberto</h3>
-        <p style="margin-bottom: 1rem; line-height: 1.6;">Contribua com o projeto ou crie sua própria versão da plataforma.</p>
-        <a href="https://github.com/www4lker/pranaworks" style="color: #48d1cc; text-decoration: none; font-weight: 500;" target="_blank">⭐ Fork This Repository</a>
-        </div>
-        </div>
-            <div style="border-top: 1px solid #34495e; padding-top: 1.5rem; color: #bdc3c7; font-size: 0.9rem;">
-                <p>PranaWorks &copy; 2025 - Desenvolvido com Claude Sonnet 4</p>
-                <p style="margin-top: 0.5rem;">"A respiração é a ponte entre o corpo e a mente, entre o consciente e o inconsciente."</p>
+    <footer style="background: linear-gradient(135deg, #2c3e50 0%, #3a4a5c 100%); color: #ecf0f1; padding: 4rem 0 2rem; margin-top: 5rem; text-align: center; position: relative; overflow: hidden;">
+        <!-- Decoração de fundo -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--bg-gradient);"></div>
+        
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1;">
+            <!-- Logo/Título estilizado -->
+            <div style="margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; color: #48d1cc; margin-bottom: 0.5rem; font-weight: 300; letter-spacing: 2px;">PranaWorks</h2>
+                <p style="color: #bdc3c7; font-style: italic; font-size: 1.1rem;">Respire. Transforme. Transcenda.</p>
+            </div>
+            
+            <!-- Cards de conteúdo -->
+            <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 3rem;">
+                <div style="min-width: 280px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #48d1cc; margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">📚</span> Relatórios e Pesquisa
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; line-height: 1.7; color: #bdc3c7;">Acesse estudos detalhados sobre os fundamentos científicos e benefícios do Pranayama.</p>
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vSl5iKnLRu8KLn1Ay9AwhBATD7xjm9b8wdX01xVo9iGesClpGl40K87gCNEzbMKWiC9ng31c7wFfhYE/pub" 
+                       style="display: inline-block; background: var(--bg-gradient); color: white; padding: 0.8rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;" 
+                       target="_blank"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)';"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        🔬 Explorar Pesquisas
+                    </a>
+                </div>
+                
+                <div style="min-width: 280px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease;">
+                    <h3 style="color: #48d1cc; margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🛠️</span> Código Aberto
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; line-height: 1.7; color: #bdc3c7;">Contribua com o projeto ou crie sua própria versão da plataforma.</p>
+                    <a href="https://github.com/www4lker/pranaworks" 
+                       style="display: inline-block; background: linear-gradient(135deg, #24292e 0%, #40484f 100%); color: white; padding: 0.8rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;" 
+                       target="_blank"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)';"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        ⭐ Fork no GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Separação elegante -->
+            <div style="width: 80%; max-width: 600px; height: 1px; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent); margin: 2rem auto;">
+            </div>
+            
+            <!-- Copyright e citação -->
+            <div style="color: #95a5a6; font-size: 0.9rem;">
+                <p style="margin-bottom: 0.8rem;">PranaWorks &copy; 2025 - Desenvolvido com ❤️ e Claude Opus 4</p>
+                <p style="font-style: italic; font-size: 1rem; color: #bdc3c7; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                    "A respiração é a ponte entre o corpo e a mente, entre o consciente e o inconsciente."
+                </p>
             </div>
         </div>
     </footer>

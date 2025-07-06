@@ -28,12 +28,10 @@ class App {
 
     exposeGlobalFunctions() {
         window.PranaHub = {
-            startPracticeMode: (protocolId) => this.startPracticeMode(protocolId),
+            // startPracticeMode removido - sem protocolos
             showSection: (sectionId) => this.uiController.showSection(sectionId),
             showProtocol: (protocolId) => this.uiController.showProtocol(protocolId),
-            practicePattern: (patternIndex) => this.practicePattern(patternIndex),
-            startPatternPractice: () => this.uiController.startPatternPractice(),
-            startProtocolPractice: () => this.uiController.startProtocolPractice()
+            practicePattern: (patternIndex) => this.practicePattern(patternIndex)
         };
 
         // Expor funções globais para disclaimers e modais
@@ -44,26 +42,13 @@ class App {
     
     practicePattern(patternIndex) {
         this.uiController.showSection('practice');
-        this.uiController.showPracticeTab('pattern');
         this.uiController.patternSelect.value = patternIndex;
         if (typeof this.uiController._updateBoxButtonState === 'function') {
             this.uiController._updateBoxButtonState();
         }
     }
 
-    startPracticeMode(protocolId) {
-        log(`Iniciando modo de prática para o protocolo: ${protocolId}`);
-        this.uiController.showSection('practice');
-        this.uiController.showPracticeTab('protocol');
-        const protocolIndex = this.protocolEngine.protocols.findIndex(p => p.id === protocolId);
-        if (protocolIndex > -1) {
-            this.protocolEngine.selectProtocol(protocolIndex);
-            this.uiController.selectProtocolInUI(protocolIndex);
-        } else {
-            log(`Erro: Protocolo com ID '${protocolId}' não encontrado.`);
-            this.uiController.showSection('protocols');
-        }
-    }
+    // startPracticeMode removido - sem protocolos
 
     // Métodos para gerenciar disclaimers e modais
     showDisclaimer() {

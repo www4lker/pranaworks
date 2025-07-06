@@ -27,6 +27,7 @@ export class AnimationEngine {
     this.timerDuration = 0;
     this.timerStartTime = 0;
     this.onTimerComplete = null;
+    this.timerUpdateCallback = null;
 
     // Estilo de animação (Ring, Bordered, Box ou Legacy)
     this.animationStyle = 'Ring'; // Padrão: Ring
@@ -86,9 +87,10 @@ export class AnimationEngine {
     log(`AnimationEngine: Padrão carregado - ${pattern.name}`);
   }
 
-  setTimer(minutes, onComplete) {
+  setTimer(minutes, onComplete, onUpdate) {
     this.timerDuration = minutes * 60;
     this.onTimerComplete = onComplete;
+    this.timerUpdateCallback = onUpdate;
   }
 
   start() {
@@ -137,6 +139,18 @@ export class AnimationEngine {
     // Ponto de saída do loop. Se não estiver rodando, não faz nada.
     if (!this.isRunning) {
         return;
+    }
+    
+    // Atualiza timer se definido
+    if (this.timerDuration > 0 && this.timerUpdateCallback) {
+      const elapsed = (timestamp - this.timerStartTime) / 1000;
+      const remaining = Math.max(0, this.timerDuration - elapsed);
+      this.timerUpdateCallback(elapsed, this.timerDuration);
+      
+      if (remaining === 0 && this.onTimerComplete) {
+        this.onTimerComplete();
+        this.onTimerComplete = null; // Evita chamar múltiplas vezes
+      }
     }
 
     const currentPhase = this.currentPattern.phases[this.phaseIndex];

@@ -77,10 +77,8 @@ export class UIController {
     this.protocolContainers = document.querySelectorAll('.protocol-container');
 
     this.practiceSection = document.getElementById('practice');
-    this.tabPattern = document.getElementById('tab-pattern');
-    this.tabProtocol = document.getElementById('tab-protocol');
+    // Tabs removidas - apenas prática livre
     this.contentPattern = document.getElementById('content-pattern');
-    this.contentProtocol = document.getElementById('content-protocol');
     
     this.patternSelect = document.getElementById('patternSelect');
     this.startPatternBtn = document.getElementById('startPatternBtn');
@@ -89,14 +87,7 @@ export class UIController {
     this.patternDescription = document.getElementById('patternDescription');
     this.patternDescriptionContainer = document.querySelector('.pattern-description');
     
-    this.protocolSelect = document.getElementById('protocolSelect');
-    this.startProtocolBtn = document.getElementById('startProtocolBtn');
-    this.skipStageBtn = document.getElementById('skipStageBtn');
-    this.cancelProtocolBtn = document.getElementById('cancelProtocolBtn');
-    this.stageStatus = document.getElementById('stageStatus');
-    this.protocolProgress = document.getElementById('protocolProgress');
-    this.protocolTimer = document.getElementById('protocolTimer');
-    this.nextPreview = document.getElementById('nextPreview');
+    // Elementos de protocolo removidos
     
     this.audioBtn = document.getElementById('audioBtn');
     this.audioControls = document.querySelectorAll('.audio-control');
@@ -104,41 +95,57 @@ export class UIController {
     this.themeBtn = document.getElementById('themeBtn');
     this.timerButtons = document.querySelectorAll('.timer-btn');
     this.styleButtons = document.querySelectorAll('.style-btn');
+    
+    // Novos elementos do timer de progresso
+    this.timerProgress = document.getElementById('timerProgress');
+    this.progressBar = document.getElementById('progressBar');
+    this.progressText = document.getElementById('progressText');
+    this.elapsedTime = document.getElementById('elapsedTime');
+    this.totalTime = document.getElementById('totalTime');
   }
 
   populateSelects() {
     patterns.forEach((p, i) => {
       this.patternSelect.innerHTML += `<option value="${i}">${p.name}</option>`;
     });
-    protocols.forEach((p, i) => {
-      this.protocolSelect.innerHTML += `<option value="${i}">${p.name}</option>`;
-    });
+    // Removido população de protocolos
   }
 
   bindEventListeners() {
-    this.tabPattern?.addEventListener('click', () => {
-      this.showPracticeTab('pattern');
-    });
-    this.tabProtocol?.addEventListener('click', () => {
-      this.showPracticeTab('protocol');
-    });
+    // Tabs removidas - sem event listeners de tabs
 
     this.startPatternBtn?.addEventListener('click', () => {
       this.audioEngine.resumeContext();
       const selectedPattern = patterns[this.patternSelect.value];
       this.animationEngine.loadPattern(selectedPattern);
-      this.animationEngine.setTimer(this.selectedDuration, () => {
-        this.animationEngine.stop();
-        this.stopBtn.disabled = true;
-        this.startPatternBtn.disabled = false;
-        this.setExerciseActive(false);
-        this.updatePatternInfo(null);
-      });
+      
+      // Configura timer com callback de atualização
+      this.animationEngine.setTimer(this.selectedDuration, 
+        () => {
+          // Callback de conclusão
+          this.animationEngine.stop();
+          this.stopBtn.disabled = true;
+          this.startPatternBtn.disabled = false;
+          this.setExerciseActive(false);
+          this.updatePatternInfo(null);
+          this.hideTimerProgress();
+        },
+        (elapsed, total) => {
+          // Callback de atualização do progresso
+          this.updateTimerProgress(elapsed, total);
+        }
+      );
+      
       this.animationEngine.start();
       this.stopBtn.disabled = false;
       this.startPatternBtn.disabled = true;
       this.setExerciseActive(true);
       this.updatePatternInfo(selectedPattern);
+      
+      // Mostra o timer se não for modo contínuo
+      if (this.selectedDuration > 0) {
+        this.showTimerProgress();
+      }
     });
     
     this.stopBtn?.addEventListener('click', () => {
@@ -147,29 +154,9 @@ export class UIController {
       this.startPatternBtn.disabled = false;
       this.setExerciseActive(false);
       this.updatePatternInfo(null);
+      this.hideTimerProgress();
     });
-    
-    this.protocolSelect?.addEventListener('change', (e) => {
-      this.protocolEngine.selectProtocol(parseInt(e.target.value));
-    });
-    
-    this.startProtocolBtn?.addEventListener('click', () => {
-      this.audioEngine.resumeContext();
-      this.setExerciseActive(true);
-      this.protocolEngine.startSelectedProtocol();
-    });
-    
-    this.cancelProtocolBtn?.addEventListener('click', () => {
-      this.protocolEngine.cancelProtocol();
-      this.setExerciseActive(false);
-      this.showPracticeTab('pattern');
-    });
-    
-    this.skipStageBtn?.addEventListener('click', () => {
-      if (this.protocolEngine.currentStageIndex < this.protocolEngine.currentProtocol.stages.length - 1) {
-        this.protocolEngine._transitionToStage(this.protocolEngine.currentStageIndex + 1);
-      }
-    });
+    // Event listeners de protocolo removidos
     
     this.timerButtons?.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -339,41 +326,7 @@ export class UIController {
     if (tabToActivate) tabToActivate.classList.add('active');
   }
 
-  showPracticeTab(tabId) {
-    if (this.activeTab === tabId) return;
-
-    this._saveCurrentState();
-    
-    const container = this.practiceSection.querySelector('.loading-overlay');
-    container.classList.add('loading');
-
-    setTimeout(() => {
-      this.activeTab = tabId;
-
-      if (tabId === 'pattern') {
-        this.contentPattern.style.display = 'block';
-        this.contentProtocol.style.display = 'none';
-        this.tabPattern.classList.add('active');
-        this.tabProtocol.classList.remove('active');
-        
-        const activeStyleBtn = document.querySelector('.style-btn.active');
-        if (activeStyleBtn) {
-          const userSelectedStyle = activeStyleBtn.dataset.style;
-          this.animationEngine.setAnimationStyle(userSelectedStyle);
-        }
-      } else {
-        this.contentPattern.style.display = 'none';
-        this.contentProtocol.style.display = 'block';
-        this.tabPattern.classList.remove('active');
-        this.tabProtocol.classList.add('active');
-        
-        this.animationEngine.setAnimationStyle('Legacy');
-      }
-      
-      this._restoreCurrentState();
-      container.classList.remove('loading');
-    }, 300);
-  }
+  // showPracticeTab removido - sem tabs
 
   selectProtocolInUI(index) {
     if (this.protocolSelect) {
@@ -432,109 +385,52 @@ export class UIController {
     this.setExerciseActive(false);
   }
 
+  showTimerProgress() {
+    if (this.timerProgress) {
+      this.timerProgress.style.display = 'block';
+    }
+  }
+  
+  hideTimerProgress() {
+    if (this.timerProgress) {
+      this.timerProgress.style.display = 'none';
+    }
+  }
+  
+  updateTimerProgress(elapsed, total) {
+    if (!this.timerProgress || total === 0) return;
+    
+    const percentage = Math.min((elapsed / total) * 100, 100);
+    const remaining = Math.max(0, total - elapsed);
+    
+    // Atualiza barra de progresso
+    if (this.progressBar) {
+      this.progressBar.style.width = `${percentage}%`;
+    }
+    
+    // Atualiza texto de porcentagem
+    if (this.progressText) {
+      this.progressText.textContent = `${Math.round(percentage)}%`;
+    }
+    
+    // Atualiza tempos
+    if (this.elapsedTime) {
+      this.elapsedTime.textContent = this.formatTime(elapsed);
+    }
+    
+    if (this.totalTime) {
+      this.totalTime.textContent = this.formatTime(total);
+    }
+  }
+  
+  formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+  
   update({ engineState }) {
-    if (!engineState || !engineState.state) return;
-    
-    const { state, currentProtocol, currentStageIndex, progress } = engineState;
-    const isFinished = state === ProtocolStates.FINISHED;
-    const isPreparing = state === ProtocolStates.PREPARING;
-    const isRunning = state === ProtocolStates.RUNNING;
-    const isTransition = state === ProtocolStates.TRANSITION;
-
-    this.startProtocolBtn.disabled = !isPreparing;
-    this.cancelProtocolBtn.disabled = isPreparing || isFinished;
-    if (this.skipStageBtn) this.skipStageBtn.disabled = !isRunning;
-    
-    if (isFinished) {
-      this.stageStatus.innerHTML = `
-        <div class="protocol-completed">
-          <h3>🎉 Protocolo Concluído!</h3>
-          <p>Seu sistema nervoso foi otimizado com sucesso. Observe as sensações de equilíbrio e clareza.</p>
-        </div>
-      `;
-      this.protocolTimer.textContent = 'Protocolo finalizado com sucesso';
-      this.nextPreview.textContent = '';
-      this.protocolProgress.value = this.protocolProgress.max;
-      return;
-    }
-
-    if (currentProtocol && currentStageIndex !== undefined) {
-      const stage = currentProtocol.stages[currentStageIndex];
-      const stageGuide = getStageGuide(currentProtocol.id, currentStageIndex);
-      
-      if (isTransition) {
-        this.stageStatus.innerHTML = `
-          <div class="transition-state">
-            <h3>⚡ Transição Neuroplástica</h3>
-            <p>Seu sistema nervoso está se adaptando. Observe as mudanças sutis nas sensações corporais.</p>
-          </div>
-        `;
-        
-        const nextStage = currentProtocol.stages[currentStageIndex + 1];
-        if (nextStage) {
-          const nextGuide = getStageGuide(currentProtocol.id, currentStageIndex + 1);
-          this.nextPreview.innerHTML = nextGuide ? 
-            `<strong>A seguir:</strong> ${nextGuide.title} - ${nextGuide.subtitle}` :
-            `A seguir: ${nextStage.pattern.name}`;
-        }
-      } else if (isRunning && stageGuide) {
-        this.stageStatus.innerHTML = `
-          <div class="stage-guide">
-            <div class="stage-header">
-              <span class="stage-number">Estágio ${currentStageIndex + 1}/${currentProtocol.stages.length}</span>
-              <h3 class="stage-title">${stageGuide.title}</h3>
-              <p class="stage-subtitle">${stageGuide.subtitle}</p>
-            </div>
-            <p class="stage-description">${stageGuide.description}</p>
-          </div>
-        `;
-      } else {
-        this.stageStatus.textContent = `Estágio ${currentStageIndex + 1}/${currentProtocol.stages.length}: ${stage.pattern.name}`;
-      }
-      
-      if (progress.totalProtocolTime && progress.totalElapsed !== undefined) {
-        const totalSec = progress.totalProtocolTime;
-        const elapsedSec = progress.totalElapsed;
-        const remainingSec = Math.max(0, totalSec - elapsedSec);
-        const min = Math.floor(remainingSec / 60);
-        const sec = Math.floor(remainingSec % 60);
-        this.protocolTimer.textContent = `Tempo restante: ${min}:${sec.toString().padStart(2, '0')}`;
-
-        this.protocolProgress.value = elapsedSec;
-        this.protocolProgress.max = totalSec;
-        
-        this.protocolProgress.setAttribute('aria-valuenow', elapsedSec.toFixed(0));
-        this.protocolProgress.setAttribute('aria-valuemax', totalSec.toFixed(0));
-        const percent = totalSec > 0 ? Math.round((elapsedSec / totalSec) * 100) : 0;
-        this.protocolProgress.setAttribute('aria-valuetext', `${percent}% concluído`);
-      }
-      
-      if (!isTransition) {
-        this.nextPreview.textContent = '';
-      }
-      
-    } else if (isPreparing) {
-      if (this.protocolSelect.selectedIndex >= 0) {
-        const selectedProtocol = protocols[this.protocolSelect.selectedIndex];
-        this.stageStatus.innerHTML = `
-          <div class="protocol-ready">
-            <h3>🧘 Pronto para Começar</h3>
-            <p><strong>${selectedProtocol.name}</strong></p>
-            <p class="protocol-intention">Prepare-se para uma jornada neurofisiológica guiada de transformação consciente.</p>
-          </div>
-        `;
-        this.protocolTimer.textContent = `Duração total: ${selectedProtocol.totalDurationMinutes} min`;
-      } else {
-        this.stageStatus.textContent = 'Selecione um protocolo';
-        this.protocolTimer.textContent = '';
-      }
-      this.protocolProgress.value = 0;
-      this.protocolProgress.setAttribute('aria-valuenow', '0');
-    } else {
-      this.stageStatus.textContent = '';
-      this.protocolTimer.textContent = '';
-      this.nextPreview.textContent = '';
-      this.protocolProgress.value = 0;
-    }
+    // Método simplificado - sem protocolos
+    return;
   }
 }
