@@ -1,9 +1,17 @@
-# Breathwork Explorer
+# PranaWorks
+
+Ciência ancestral da respiração consciente para o despertar, a cura e a transformação integral de corpo, da mente e do espírito
 
 > **Portal de Protocolos Respiratórios Avançados**  
 > Um hub completo de exercícios respiratórios baseado em ciência e tradições milenares.
 
-![Breathwork Explorer](https://i.postimg.cc/sXKVspGy/image.png)
+![PranaWorks](https://i.postimg.cc/j5pBDTdN/image.png)
+
+![Padroes](https://i.postimg.cc/cCJT15fY/image.png)
+
+![Padroes1](https://i.postimg.cc/wjN2BNRW/image.png)
+
+![Padroes2](https://i.postimg.cc/7PQnM9gs/image.png)
 
 🌐 **[Acesse aqui: prana.walker.eco.br](http://prana.walker.eco.br/)**
 
@@ -27,7 +35,7 @@
 
 ## 🎯 Sobre o Projeto
 
-O **Breathwork Explorer** é uma plataforma web avançada que combina **8 padrões respiratórios fundamentais** em **7 protocolos cientificamente otimizados**. Desenvolvido com arquitetura modular robusta e interface moderna, oferece desde práticas simples de relaxamento até sequências complexas para performance e meditação.
+O **PranaWorks** é uma plataforma web avançada que combina **8 padrões respiratórios fundamentais** em **7 protocolos cientificamente otimizados**. Desenvolvido com arquitetura modular robusta e interface moderna, oferece desde práticas simples de relaxamento até sequências complexas para performance e meditação.
 
 ### ✨ Características Únicas
 
@@ -37,7 +45,7 @@ O **Breathwork Explorer** é uma plataforma web avançada que combina **8 padrõ
 - **📱 PWA Completo**: Funciona offline, instalável como app nativo
 - **🔒 Proteção Inteligente**: Sistema que preserva a continuidade da prática
 
-**Desenvolvido através de programação assistida por IA** com Claude Sonnet 4, demonstrando a eficácia da colaboração humano-IA para criar aplicações de alta qualidade.
+**Desenvolvido através de programação assistida por IA** com Claude Sonnet 4 (na maior parte), demonstrando a eficácia da colaboração humano-IA para criar aplicações de alta qualidade.
 
 ---
 
@@ -57,7 +65,7 @@ O **Breathwork Explorer** é uma plataforma web avançada que combina **8 padrõ
 ### 🎯 **Modos de Prática**
 - **Prática Livre**: Padrões individuais com duração personalizável
 - **Protocolos Guiados**: Sequências multi-estágio automatizadas
-- **Timer Flexível**: 5, 10, 15 minutos ou modo contínuo
+- **Timer Flexível**: de 2 a 10 minutos ou modo contínuo
 
 ### 🔒 **Proteção da Prática**
 - **Detecção de Saída**: Para automaticamente se usuário trocar de aba
@@ -185,11 +193,10 @@ Sequências multi-estágio que combinam padrões para objetivos específicos:
 
 ### 🧘 **Protocolos Guiados (Sequências Completas)**
 
-1. **Acesse** a seção "Praticar" → "Protocolo Guiado"
-2. **Escolha** um protocolo baseado no objetivo desejado
+1. **Acesse** a seção "Praticar"
+2. **Escolha** um padrão baseado no objetivo desejado, com o timer correspondente
 3. **Clique** "Confirmar Início"
-4. **Acompanhe** as instruções científicas de cada estágio
-5. **Permita** transições automáticas entre padrões
+4. **Continue** conforme o protocolo desejado
 
 ### 🔍 **Exploração Educativa**
 
@@ -213,8 +220,8 @@ Sequências multi-estágio que combinam padrões para objetivos específicos:
 ### **Instalação Local**
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/breathwork-explorer.git
-cd breathwork-explorer
+git clone https://github.com/seu-usuario/pranaworks.git
+cd pranaworks
 
 # Servidor local (escolha uma opção)
 python -m http.server 8000    # Python 3
@@ -386,7 +393,7 @@ Veja o arquivo [LICENSE](LICENSE) para detalhes completos.
 
 ### 📁 **Estrutura do Projeto**
 ```
-breathwork-explorer/
+pranaworks/
 ├── 📁 assets/          # Ícones e recursos estáticos
 ├── 📁 css/             # Estilos e temas
 ├── 📁 js/              # Código JavaScript modular
